@@ -9,7 +9,10 @@
             <p>Date(MM/DD/YYYY):</p>
             <input type = "text" v-model="inputDate">
             <br>
-            <button @click = "closeModal()">Confirm</button>
+            <div v-if = "errorMessage">
+                <p>Please complete this form before submitting.</p>
+            </div>
+            <button @click = "confirmButton()">Confirm</button>
             <button @click ="closeModal()">Cancel</button>
         </div>
     </div>
@@ -22,11 +25,22 @@ let inputSpecies = ref("")
 let inputDate = ref("")
 let inputWeight = ref("")
 
+let errorMessage = ref(false)
+
 const emit = defineEmits('close')
+
 const closeModal = () => {
     emit('close')
 }
 
+const confirmButton = () => {
+    if (inputSpecies.value && inputDate.value && inputWeight.value) {
+        emit('close')
+    }
+    else {
+        errorMessage.value = true
+    }
+}
 
 </script>
 
