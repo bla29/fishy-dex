@@ -1,27 +1,32 @@
 <template>
-    <div class = "backdrop" @click ="closeModal()">
+    <div class = "backdrop">
         <div class = "modal">
             <h2>Enter your fish details</h2>
             <p>Species:</p>
-            <input type = "text">
+            <input type = "text" v-model="inputSpecies">
             <p>Weight(lbs):</p>
-            <input type = "text">
+            <input type = "text" v-model="inputWeight">
             <p>Date(MM/DD/YYYY):</p>
-            <input type = "text">
+            <input type = "text" v-model="inputDate">
             <br>
-            <button>Confirm</button>
+            <button @click = "closeModal()">Confirm</button>
+            <button @click ="closeModal()">Cancel</button>
         </div>
     </div>
 </template>
 
 <script setup>
-import {defineEmits} from "vue"
+import {ref, defineEmits} from "vue"
+
+let inputSpecies = ref("")
+let inputDate = ref("")
+let inputWeight = ref("")
 
 const emit = defineEmits('close')
-
 const closeModal = () => {
     emit('close')
 }
+
 
 </script>
 
@@ -43,5 +48,6 @@ const closeModal = () => {
     display: flex;
     flex-direction: column;
     gap: 10px;
+    color: black;
 }
 </style>
