@@ -1,26 +1,55 @@
 <script setup>
 import Modal from './components/Modal.vue'
-import {ref} from 'vue'
+import {ref, onMounted} from 'vue'
 
 let modal = ref(false)
+let edit = ref(false)
+let fishIdStore = ref(0)
 let fishList = []
 
 const toggleModal = () => {
   modal.value = !modal.value
-  console.log (modal.value)
 }
-  
-fetch('http://localhost:3000/fish', {
-  method: 'GET',
-  headers: {
-    'Accept': 'application/json',  // Ensure server returns JSON
-    'Content-Type': 'application/json'
-  }
-})
-  .then(res => res.json())
-  .then(data => fishList.push(...data))
-  .catch(err => console.log(err.message))
 
+const toggleeditModal = () => {
+  edit.value = !edit.value
+}
+
+const storeFishId = (fishId) => {
+  console.log(fishId)
+  fishIdStore.value = fishId
+  toggleeditModal()
+}
+
+const getFishList = () => {
+  fetch('http://localhost:3000/fish', {
+    method: 'GET',
+    headers: {
+      'Accept': 'application/json',  // Ensure server returns JSON
+      'Content-Type': 'application/json'
+    }
+  })
+    .then(res => res.json())
+    .then(data => fishList.push(...data))
+    .catch(err => console.log(err.message))
+}
+
+const deleteFish = (id) => {
+  fetch('http://localhost:3000/fish/' + id, {
+    method: 'DELETE',
+    headers: {
+      'Accept': 'application/json',  // Ensure server returns JSON
+      'Content-Type': 'application/json'
+    }
+  })
+    .then(res => res.json())
+    .then(data => fishList.push(...data))
+    .catch(err => console.log(err.message))
+}
+
+onMounted(() => {
+  getFishList()
+})
   
 </script>
 
@@ -37,7 +66,10 @@ fetch('http://localhost:3000/fish', {
     </div>
     <button class = "button" @click = "toggleModal()">Log your catch!</button>
     <div v-if = "modal">
-      <Modal @close = "toggleModal()" />
+      <Modal addHeader="Add your fish details" :edit="edit" @closeAddModal = "toggleModal()" />
+    </div>
+    <div v-if = "edit">
+      <Modal editHeader="Edit your fish details" :edit="edit" :fishIdStore = "fishIdStore"  @closeEditModal = "toggleeditModal()" />
     </div>
     </header>
 
@@ -47,8 +79,8 @@ fetch('http://localhost:3000/fish', {
         <p>Species: {{ fish.species }}</p>
         <p>Weight: {{ fish.weight }}</p>
         <p>Catch Date: {{ fish.date }}</p>
-        <button>Edit catch</button>
-        <button>Delete catch</button>
+        <button @click = "storeFishId(fish.id)">Edit catch</button>
+        <button @click = "deleteFish(fish.id)">Delete catch</button>
       </li>
     </ul>
   </body>
