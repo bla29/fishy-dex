@@ -75,7 +75,7 @@ const confirmButton = async(edit, fishIdStore) => {
                 date: inputDate.value.toString()
         }
         if(edit) {
-            await fetch('http://localhost:3000/fish/' + fishIdStore, {
+            await fetch('https://fishy-dex-store-production.up.railway.app/fish/' + fishIdStore, {
                 method: 'PATCH',
                 headers: {
                     'Accept': 'application/json',  // Ensure server returns JSON
@@ -89,7 +89,7 @@ const confirmButton = async(edit, fishIdStore) => {
             closeModal(edit)
         }
         else {
-            await fetch('http://localhost:3000/fish', {
+            await fetch('https://fishy-dex-store-production.up.railway.app/fish', {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',  // Ensure server returns JSON

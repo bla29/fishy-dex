@@ -32,7 +32,7 @@ const storeFishId = (fishId) => {
 }
 
 const getFishList = () => {
-  fetch('http://localhost:3000/fish', {
+  fetch('https://fishy-dex-store-production.up.railway.app/fish', {
     method: 'GET',
     headers: {
       'Accept': 'application/json',  // Ensure server returns JSON
@@ -45,7 +45,7 @@ const getFishList = () => {
 }
 
 const deleteFish = (id) => {
-  fetch('http://localhost:3000/fish/' + id, {
+  fetch('https://fishy-dex-store-production.up.railway.app/fish/' + id, {
     method: 'DELETE',
     headers: {
       'Accept': 'application/json',  // Ensure server returns JSON
