@@ -58,7 +58,7 @@ const closeModal = (edit) => {
     }
 }
 
-const confirmButton = (edit, fishIdStore) => {
+const confirmButton = async(edit, fishIdStore) => {
     if (inputSpecies.value && inputDate.value && inputWeight.value) {
         const payload = {
                 species: inputSpecies.value.toString(),
@@ -66,8 +66,7 @@ const confirmButton = (edit, fishIdStore) => {
                 date: inputDate.value.toString()
         }
         if(edit) {
-            closeModal(edit)
-            fetch('http://localhost:3000/fish/' + fishIdStore, {
+            await fetch('http://localhost:3000/fish/' + fishIdStore, {
                 method: 'PATCH',
                 headers: {
                     'Accept': 'application/json',  // Ensure server returns JSON
@@ -78,10 +77,10 @@ const confirmButton = (edit, fishIdStore) => {
             .then(res => res.json())
             .then(data => console.log(data))
             .catch(err => console.log(err.message))
+            closeModal(edit)
         }
         else {
-            closeModal(edit)
-            fetch('http://localhost:3000/fish', {
+            await fetch('http://localhost:3000/fish', {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',  // Ensure server returns JSON
@@ -92,6 +91,7 @@ const confirmButton = (edit, fishIdStore) => {
             .then(res => res.json())
             .then(data => console.log(data))
             .catch(err => console.log(err.message))
+            closeModal(edit)
         }
     }
     else {

@@ -5,14 +5,24 @@ import {ref, onMounted} from 'vue'
 let modal = ref(false)
 let edit = ref(false)
 let fishIdStore = ref(0)
-let fishList = []
+let fishList = ref([])
 
-const toggleModal = () => {
+const toggleModal = async() => {
   modal.value = !modal.value
+  if(!modal.value) {
+    console.log(!modal.value)
+    fishList.value = []
+    await getFishList()
+  }
 }
 
-const toggleeditModal = () => {
+const toggleeditModal = async() => {
   edit.value = !edit.value
+  if(!edit.value) {
+    console.log(!edit.value)
+    fishList.value = []
+    await getFishList()
+  }
 }
 
 const storeFishId = (fishId) => {
@@ -30,7 +40,7 @@ const getFishList = () => {
     }
   })
     .then(res => res.json())
-    .then(data => fishList.push(...data))
+    .then(data => fishList.value = [...data])
     .catch(err => console.log(err.message))
 }
 
@@ -43,8 +53,10 @@ const deleteFish = (id) => {
     }
   })
     .then(res => res.json())
-    .then(data => fishList.push(...data))
     .catch(err => console.log(err.message))
+    
+    const index = fishList.value.findIndex(fish => fish.id == id)
+    fishList.value.splice(index, 1)
 }
 
 onMounted(() => {
@@ -72,6 +84,7 @@ onMounted(() => {
       <Modal editHeader="Edit your fish details" :edit="edit" :fishIdStore = "fishIdStore"  @closeEditModal = "toggleeditModal()" />
     </div>
     </header>
+
 
   <body>
     <ul>
