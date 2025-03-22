@@ -6,12 +6,15 @@
             <p>Species:</p>
             <input type = "text" v-model="inputSpecies">
             <p>Weight(lbs):</p>
+            <div v-if = "errorMessageWeight">
+                <p class="errorMsg">Weight must be a number</p>
+            </div>
             <input type = "text" v-model="inputWeight">
             <p>Date(MM/DD/YYYY):</p>
             <input type = "text" v-model="inputDate">
             <br>
             <div v-if = "errorMessage">
-                <p>Please complete this form before submitting.</p>
+                <p class="errorMsg">Please complete this form before submitting.</p>
             </div>
             <button @click = "confirmButton(edit, fishIdStore)">Confirm</button>
             <button @click ="closeModal(edit)">Cancel</button>
@@ -46,6 +49,7 @@ let inputDate = ref("")
 let inputWeight = ref("")
 
 let errorMessage = ref(false)
+let errorMessageWeight = ref(false)
 
 const emit = defineEmits(['closeAddModal', 'closeEditModal'])
 
@@ -59,7 +63,12 @@ const closeModal = (edit) => {
 }
 
 const confirmButton = async(edit, fishIdStore) => {
-    if (inputSpecies.value && inputDate.value && inputWeight.value) {
+    let sendRequest = true
+    if(Number(inputWeight.value) === 0 || isNaN(Number(inputWeight.value))) {
+        errorMessageWeight.value = true
+        sendRequest = false
+    }
+    if (inputSpecies.value && inputDate.value && sendRequest) {
         const payload = {
                 species: inputSpecies.value.toString(),
                 weight: Number(inputWeight.value),
@@ -103,11 +112,12 @@ const confirmButton = async(edit, fishIdStore) => {
 
 <style scoped>
 .backdrop {
-    top: 0;
     position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     background: rgba(0, 0, 0, 0.5);
-    width: 100%;
-    height: 100%;
 }
 
 .modal {
@@ -120,5 +130,10 @@ const confirmButton = async(edit, fishIdStore) => {
     flex-direction: column;
     gap: 10px;
     color: black;
+}
+
+.errorMsg {
+    color: red;
+    font-weight: bold;
 }
 </style>

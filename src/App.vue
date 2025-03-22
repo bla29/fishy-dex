@@ -66,8 +66,8 @@ onMounted(() => {
 </script>
 
 <template>
-  <header>
-    <div class="container">
+  <div class = "container">
+    <div>
       <img src="@/assets/bass.png" width="200" height="200" />
       <div>
         <h1 class="green">Fishy-Dex</h1>
@@ -76,50 +76,54 @@ onMounted(() => {
         </h3>
       </div>
     </div>
-    <button class = "button" @click = "toggleModal()">Log your catch!</button>
+    <button class = "buttonHeader" @click = "toggleModal()">Log your catch!</button>
     <div v-if = "modal">
       <Modal addHeader="Add your fish details" :edit="edit" @closeAddModal = "toggleModal()" />
     </div>
     <div v-if = "edit">
       <Modal editHeader="Edit your fish details" :edit="edit" :fishIdStore = "fishIdStore"  @closeEditModal = "toggleeditModal()" />
     </div>
-    </header>
-
-
-  <body>
-    <ul>
-      <li v-for="fish in fishList" :key="fish.id" class="fishlist">
-        <p>Species: {{ fish.species }}</p>
-        <p>Weight: {{ fish.weight }}</p>
-        <p>Catch Date: {{ fish.date }}</p>
-        <button @click = "storeFishId(fish.id)">Edit catch</button>
-        <button @click = "deleteFish(fish.id)">Delete catch</button>
-      </li>
-    </ul>
-  </body>
-
+      
+    <div>
+      <ul>
+        <li v-for="fish in fishList" :key="fish.id" class="fishlist">
+          <p>Species: {{ fish.species }}</p>
+          <p>Weight: {{ fish.weight }}</p>
+          <p>Catch Date: {{ fish.date }}</p>
+          <button @click = "storeFishId(fish.id)" class="buttonList">Edit catch</button>
+          <button @click = "deleteFish(fish.id)" class="buttonList">Delete catch</button>
+        </li>
+      </ul>
+    </div>
+</div>
 
 </template>
 
 <style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
-  text-align: center;
-}
 
-.button {
-  margin: 50px;
+.buttonHeader {
+  margin: 25px;
   padding: 10px;
 }
 
+.buttonList {
+  margin: 5px;
+}
+
 .container {
-  align-self: center;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  
 }
 
 .fishlist {
   padding: 10px;
 }
+
 
 
 </style>
