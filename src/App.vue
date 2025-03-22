@@ -3,11 +3,25 @@ import Modal from './components/Modal.vue'
 import {ref} from 'vue'
 
 let modal = ref(false)
+let fishList = []
 
 const toggleModal = () => {
   modal.value = !modal.value
   console.log (modal.value)
 }
+  
+fetch('http://localhost:3000/fish', {
+  method: 'GET',
+  headers: {
+    'Accept': 'application/json',  // Ensure server returns JSON
+    'Content-Type': 'application/json'
+  }
+})
+  .then(res => res.json())
+  .then(data => fishList.push(...data))
+  .catch(err => console.log(err.message))
+
+  
 </script>
 
 <template>
@@ -28,9 +42,15 @@ const toggleModal = () => {
     </header>
 
   <body>
-    <li>
-      hi
-    </li>
+    <ul>
+      <li v-for="fish in fishList" :key="fish.id" class="fishlist">
+        <p>Species: {{ fish.species }}</p>
+        <p>Weight: {{ fish.weight }}</p>
+        <p>Catch Date: {{ fish.date }}</p>
+        <button>Edit catch</button>
+        <button>Delete catch</button>
+      </li>
+    </ul>
   </body>
 
 
@@ -50,6 +70,10 @@ header {
 
 .container {
   align-self: center;
+}
+
+.fishlist {
+  padding: 10px;
 }
 
 
