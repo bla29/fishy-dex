@@ -35,7 +35,24 @@ const closeModal = () => {
 
 const confirmButton = () => {
     if (inputSpecies.value && inputDate.value && inputWeight.value) {
+        const payload = {
+            species: inputSpecies.value.toString(),
+            weight: Number(inputWeight.value),
+            date: inputDate.value.toString()
+        }
+        
         emit('close')
+        fetch('http://localhost:3000/fish', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',  // Ensure server returns JSON
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+        })
+        .then(res => res.json())
+        .then(data => console.log(data))
+        .catch(err => console.log(err.message))
     }
     else {
         errorMessage.value = true
