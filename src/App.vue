@@ -66,62 +66,230 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class = "container">
-    <div>
-      <img src="@/assets/bass.png" width="200" height="200" />
-      <div>
-        <h1 class="green">Fishy-Dex</h1>
-        <h3>
-          A collection of your fish catches.
-        </h3>
-      </div>
+
+<div class="container">
+        <div class="first-div">
+            <div class="bottom-awesome-pic">
+                <div class="awesome-left-div">
+                    <h3 class="hero-main-text">Fishy-Dex</h3>
+                    <h1 class="awesome-text">A collection of your fish catches.</h1>
+                    <button class="first-button" @click = "toggleModal()">Log your catch!</button>
+                </div>
+                <img src="@/assets/bass.png" class="first-img">
+            </div>
+        </div>
+        <div v-if = "modal">
+          <Modal addHeader="Add your fish details" :edit="edit" @closeAddModal = "toggleModal()" />
+        </div>
+        <div v-if = "edit">
+          <Modal editHeader="Edit your fish details" :edit="edit" :fishIdStore = "fishIdStore"  @closeEditModal = "toggleeditModal()" />
+        </div>
+        <div class="second-div">
+            <div class="random-information-header">
+                <h4>Catches</h4>
+            </div>
+            <div class="photo-row">
+                <div v-for="fish in fishList" :key="fish.id" class="photo-row-item">
+                  <img src="@/assets/fishicon.png" class="photo-row-photo">
+                  <li>
+                    <p>Species: {{ fish.species }}</p>
+                    <p>Weight: {{ fish.weight }}</p>
+                    <p>Catch Date: {{ fish.date }}</p>
+                    <button @click = "storeFishId(fish.id)" class="buttonList">Edit catch</button>
+                    <button @click = "deleteFish(fish.id)" class="buttonList">Delete catch</button>
+                  </li>
+                </div>
+            </div>
+        </div>
     </div>
-    <button class = "buttonHeader" @click = "toggleModal()">Log your catch!</button>
-    <div v-if = "modal">
-      <Modal addHeader="Add your fish details" :edit="edit" @closeAddModal = "toggleModal()" />
-    </div>
-    <div v-if = "edit">
-      <Modal editHeader="Edit your fish details" :edit="edit" :fishIdStore = "fishIdStore"  @closeEditModal = "toggleeditModal()" />
-    </div>
-      
-    <div>
-      <ul>
-        <li v-for="fish in fishList" :key="fish.id" class="fishlist">
-          <p>Species: {{ fish.species }}</p>
-          <p>Weight: {{ fish.weight }}</p>
-          <p>Catch Date: {{ fish.date }}</p>
-          <button @click = "storeFishId(fish.id)" class="buttonList">Edit catch</button>
-          <button @click = "deleteFish(fish.id)" class="buttonList">Delete catch</button>
-        </li>
-      </ul>
-    </div>
-</div>
 
 </template>
 
 <style scoped>
 
-.buttonHeader {
-  margin: 25px;
-  padding: 10px;
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%; /* Ensure the body and html elements take full height */
 }
 
-.buttonList {
-  margin: 5px;
+* {
+    font-family: roboto;
+}
+
+li {
+  list-style-type: none;
+}
+
+.first-div {
+    background-color: #1F2937;
+}
+
+.first-button {
+    background-color: #3882F6;
+    color: white;
+    width: 300px;
+    border: none;
+    padding: 15px;
+    border-radius: 5px;
+    font-size:large;
 }
 
 .container {
-  width: 100%;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  
+    display: flex;
+    flex-direction: column;
 }
 
-.fishlist {
-  padding: 10px;
+.top-row-header {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: flex-start;
+}
+
+.header-logo-text {
+    color: #F9FAF8;
+}
+
+.top-header-links {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    color: #E5E7EB;
+}
+
+
+.bottom-awesome-pic {
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 30px;
+    padding-bottom: 60px;
+}
+
+.awesome-left-div {
+    display: flex;
+    flex-direction: column;
+    flex-basis: 300px;
+    max-height: 300px;
+    padding-left: 100px;
+}
+
+.hero-main-text {
+    color: #F9FAF8;
+    font-size: 48px;
+    font-weight: 900;
+    margin-bottom: 5px;
+}
+
+.awesome-text {
+    color: #E5E7EB;
+    margin-top: 0%;
+    margin-bottom: 5px;
+}
+
+.first-img {
+    max-height: 300px;
+    width: 300px;
+}
+
+.second-div {
+    background-color: white;
+}
+
+.random-information-header {
+    font-size: 36px;
+    color: #1F2937;
+    font-weight: 900;
+    display: flex;
+    justify-content: center;
+}
+
+.photo-row {
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+}
+
+.photo-row-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+}
+
+.photo-row-photo {
+    max-height: 150px;
+    width: 150px;
+    border-radius: 10px;
+    flex: 1 1 0;
+}
+
+.photo-row-text {
+    flex: 3 1 0;
+    max-width: 150px;
+    color: gray;
+}
+
+.quote-section {
+    background-color: #E5E7EB;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 50px;
+}
+
+.quote {
+    font-size: 36px;
+    font-weight: light;
+    color: #1F2937;
+    font-style: italic;
+    max-width: 700px;
+    margin-bottom: 5px;
+}
+
+.author-quote {
+    font-weight: bold;
+    margin-top: 0px;
+    padding-left: 500px;
+}
+
+.fourth-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 100px;
+}
+
+.blue-banner {
+    background-color: #3882F6;
+    display: flex;
+    gap: 100px;
+    padding-left: 100px;
+    padding-right: 100px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.blue-banner-text {
+    color: white;
+}
+
+.second-button {
+    background-color: #3882F6;
+    color: white;
+    width: 80px;
+    border-color: white;
+    padding: 5px;
+    border-radius: 5px;
+    height: 30px;
+    align-self: center;
+}
+
+.fifth-div {
+    background-color: #1F2937;
+    display: flex;
+    justify-content: center;
+    color: white;
+    padding: 20px;
 }
 
 
