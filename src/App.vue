@@ -79,10 +79,10 @@ onMounted(() => {
             </div>
         </div>
         <div v-if = "modal">
-          <Modal addHeader="Add your fish details" :edit="edit" @closeAddModal = "toggleModal()" />
+          <Modal addHeader="Add your fish details" :edit=false @closeAddModal = "toggleModal()" />
         </div>
         <div v-if = "edit">
-          <Modal editHeader="Edit your fish details" :edit="edit" :fishIdStore = "fishIdStore"  @closeEditModal = "toggleeditModal()" />
+          <Modal editHeader="Edit your fish details" :edit=true :fishIdStore = "fishIdStore"  @closeEditModal = "toggleeditModal()" />
         </div>
         <div class="second-div">
             <div class="random-information-header">
